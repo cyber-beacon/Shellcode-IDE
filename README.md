@@ -31,63 +31,7 @@ Shellcode-IDE streamlines the shellcode development workflow by providing:
 - **Multi-format export**: Generate code snippets for various programming languages
 - **Integration**: Seamlessly integrates into Binary Ninja's ecosystem
 
-## How users can get started
-
-### Prerequisites
-
-- Binary Ninja (licensed), with Python API available
-- Python 3.8+ (matching your Binary Ninja build)
-- Qt via PySide2 (Binary Ninja typically bundles PySide2; no manual install required)
-
-### Installation
-
-You can install as a user plugin. The typical plugin directories are:
-
-- **macOS**: `~/Library/Application Support/Binary Ninja/plugins`
-- **Linux**: `~/.binaryninja/plugins`
-- **Windows**: `%APPDATA%\Binary Ninja\plugins`
-
-#### Manual Install
-
-1. Close Binary Ninja
-2. Clone or copy this repository into your plugins directory as `Shellcode-IDE`
-
-    - **Example (macOS/Linux)**:
-
-        ```bash
-        cd "~/Library/Application Support/Binary Ninja/plugins"  # macOS
-        # or cd ~/.binaryninja/plugins  # Linux
-        git clone https://github.com/CX330Blake/Shellcode-IDE.git Shellcode-IDE
-        ```
-
-3. Start Binary Ninja. The plugin registers a Tools menu entry and a toolbar icon
-
-#### Platform-specific Instructions
-
-**macOS**:
-
-```bash
-cd "~/Library/Application Support/Binary Ninja/plugins"
-git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
-```
-
-**Linux**:
-
-```bash
-cd ~/.binaryninja/plugins
-git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
-```
-
-**Windows (PowerShell)**:
-
-```powershell
-cd "$env:APPDATA\Binary Ninja\plugins"
-git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
-```
-
-After installation, restart Binary Ninja or use "Reload Plugins".
-
-### Quick Start
+## Quick Start
 
 #### To disassemble bytes/hex to assembly
 
@@ -158,20 +102,11 @@ Contributions are welcome! Please open issues for bugs/ideas and submit focused 
 - Match the existing code style and structure
 - Include tests for new logic where practical
 
-### Dependencies
-
-The plugin requires the following dependencies:
-
-- `pygments>=2.12`
-- `keystone-engine>=0.9.2`
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details._
+_
 
 ## Description:
 
-Shellcode IDE — makes developing and analyzing shellcode much more convenient.
+Shellcode IDE makes developing and analyzing shellcode much more convenient.
 
 
 ## Installation Instructions
