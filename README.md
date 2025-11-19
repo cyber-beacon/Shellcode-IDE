@@ -1,324 +1,175 @@
-# Shellcode-IDE (v0.1.10)
-Author: **CX330Blake**
+# Shellcode-IDE
 
-_This is a short description meant to fit on one line._
+[![Version](https://img.shields.io/badge/version-0.1.10-blue)](https://github.com/CX330Blake/Shellcode-IDE)
+[![License](https://img.shields.io/github/license/CX330Blake/Shellcode-IDE)](LICENSE)
+[![Binary Ninja](https://img.shields.io/badge/Binary%20Ninja-v3164+-red)](https://binary.ninja/)
+[![Python](https://img.shields.io/badge/python-3.8+-blue)](https://www.python.org/)
 
-## Description:
+> A Qt-based Binary Ninja plugin that helps you compose, analyze, optimize, validate, and export shellcode across architectures that Binary Ninja supports.
 
-# Shellcode IDE
+## Demo
 
-A Qt-based Binary Ninja plugin that helps you compose, analyze, optimize, validate, and export shellcode across architectures that Binary Ninja supports. It combines Binary Ninja’s assembler/disassembler with a user-friendly GUI for rapid iteration and safe validation of shellcode for reverse engineering, CTFs, and security research.
+## What the project does
 
-- Audience: reverse engineers, CTF players, exploit developers, security researchers
-- Status: early development; core assemble/disassemble and UI scaffolding targeted first
+Shellcode-IDE is a powerful Binary Ninja plugin designed for reverse engineers, CTF players, exploit developers, and security researchers. It provides a comprehensive environment for developing and analyzing shellcode with a user-friendly GUI that combines Binary Ninja's assembler/disassembler capabilities for rapid iteration and safe validation of shellcode.
 
----
+### Key Features
 
-## Highlights
+- **Two-way conversion**: Raw bytes/hex ↔ assembly text
+- **Multi-architecture support**: Assemble for any Binary Ninja architecture/platform
+- **Multiple export formats**: Inline `\x..`, raw hex, C stub, Python stub, Zig stub, Rust stub, Go stub
+- **Live metadata**: Byte length, instruction count, null count, endianness, architecture
+- **Configurable bad-pattern detection**: e.g., `00`, `0a`, `ff`, sequences, regex
+- **Peephole optimizations**: With preview/confirm (e.g., `push 0` → `xor reg, reg; push reg`)
+- **Validation rules**: No variables/labels, no absolute addresses/relocations, no nulls (unless allowed)
+- **Binary Ninja integration**: Menu + toolbar + dockable/floating Qt window with shortcuts
 
-- Two-way conversion: raw bytes/hex ⇆ assembly text
-- Assemble for any Binary Ninja architecture/platform
-- Multiple output formats: inline `\x..`, raw hex, C stub, Python stub, Zig stub, Rust stub, Go stub
-- Live metadata: byte length, instruction count, null count, endianness, arch
-- Configurable bad-pattern detection (e.g., `00`, `0a`, `ff`, sequences, regex)
-- Peephole optimizations with preview/confirm (e.g., `push 0` → `xor reg, reg; push reg`, `mov rax, imm8` when safe)
-- Validation rules: no variables/labels, no absolute addresses/relocations, no nulls (unless allowed)
-- Binary Ninja integration: menu + toolbar + dockable/floating Qt window with shortcuts
+## Why the project is useful
 
----
+Shellcode-IDE streamlines the shellcode development workflow by providing:
 
-## Screenshots
+- **Rapid iteration**: Quickly test and validate shellcode snippets without external tools
+- **Architecture flexibility**: Work across different architectures with a single interface
+- **Safety checks**: Built-in validation prevents common shellcode issues like null bytes
+- **Optimization**: Improve your shellcode with intelligent peephole optimizations
+- **Multi-format export**: Generate code snippets for various programming languages
+- **Integration**: Seamlessly integrates into Binary Ninja's ecosystem
 
-(Coming soon)
-- Main window with Input/Output panes and live stats
-- Validation tab with clickable issues and fix suggestions
+## How users can get started
 
----
-
-## Requirements
+### Prerequisites
 
 - Binary Ninja (licensed), with Python API available
-- Python 3.8+ (match your Binary Ninja build)
+- Python 3.8+ (matching your Binary Ninja build)
 - Qt via PySide2 (Binary Ninja typically bundles PySide2; no manual install required)
-- Optional: Capstone/Keystone for fallback dis/assembly (used only if configured)
 
----
+### Installation
 
-## Installation
+You can install as a user plugin. The typical plugin directories are:
 
-You can install as a user plugin. Typical plugin directories:
+- **macOS**: `~/Library/Application Support/Binary Ninja/plugins`
+- **Linux**: `~/.binaryninja/plugins`
+- **Windows**: `%APPDATA%\Binary Ninja\plugins`
 
-- macOS: `~/Library/Application Support/Binary Ninja/plugins`
-- Linux: `~/.binaryninja/plugins`
-- Windows: `%APPDATA%\Binary Ninja\plugins`
+#### Manual Install
 
-Manual install:
+1. Close Binary Ninja
+2. Clone or copy this repository into your plugins directory as `Shellcode-IDE`
 
-1. Close Binary Ninja.
-2. Copy or clone this repository into your plugins directory as `Shellcode-IDE`.
-   - Example (macOS/Linux):
-     - `cd "~/Library/Application Support/Binary Ninja/plugins"` (macOS) or `cd ~/.binaryninja/plugins` (Linux)
-     - `git clone https://github.com/<you>/Shellcode-IDE.git Shellcode-IDE`
-3. Start Binary Ninja. The plugin registers a Tools menu entry and a toolbar icon.
+    - **Example (macOS/Linux)**:
 
-If you’re reading this inside `.../Binary Ninja/plugins/Shellcode-IDE`, you’re set. Restart Binary Ninja to load the plugin, or use “Reload Plugins” if available.
+        ```bash
+        cd "~/Library/Application Support/Binary Ninja/plugins"  # macOS
+        # or cd ~/.binaryninja/plugins  # Linux
+        git clone https://github.com/CX330Blake/Shellcode-IDE.git Shellcode-IDE
+        ```
 
----
+3. Start Binary Ninja. The plugin registers a Tools menu entry and a toolbar icon
 
-## Launching
+#### Platform-specific Instructions
 
-- Menu: `Tools → Shellcode IDE`
-- Toolbar: Shellcode IDE icon
-- Docking: Opens as a dockable/floating Qt window
+**macOS**:
 
----
-
-## Quick Start
-
-- Disassemble bytes/hex → assembly
-  1. Open Shellcode IDE.
-  2. Select target `Architecture`/`Platform` (defaults to active view when available).
-  3. Paste hex/bytes into the “Hex/Bytes” tab (supports whitespace, `0x` prefixes, and `\x..` forms).
-  4. Click “Disassemble”. View assembly in the output panel and stats in the status bar.
-  5. Export via the “Formats” tab (copy or save to file).
-
-- Assemble assembly → shellcode
-  1. Switch to the “Assembly” tab and enter one instruction per line.
-  2. Click “Assemble”. Errors (if any) show inline with line/column info.
-  3. Review live stats, run “Optimize” (optional), “Validate”, and export in your preferred format.
-
----
-
-## Features
-
-- Input/Output
-  - Input tabs: “Hex/Bytes”, “Assembly”, with syntax highlighting and paste detection
-  - Output tabs: “Disassembly / Assembly Output”, “Formats”, “Validation”, “History”
-  - Status bar: arch/platform, length, null count, bad-pattern count, optimization status
-
-- Assemblers & Disassemblers
-  - Uses Binary Ninja API: `Architecture.assemble()` and instruction text utilities
-  - Disassembly can work in-memory from raw bytes; follows branches best-effort
-  - Architecture and platform are user-selectable and default to the active view
-
-- Export Formats
-  - Inline: `"\x90\x90\x48..."`
-  - Hex: `90 90 48 ...` or `0x90,0x90,...` (selectable)
-  - C: minimal runnable C stub (mmap + function pointer)
-  - Python: minimal runnable Python stub (mmap + ctypes)
-  - Zig: minimal runnable Zig stub (page-alloc + mprotect + function pointer)
-  - Rust: minimal runnable Rust stub (mmap + function pointer)
-  - Go: minimal runnable Go stub (cgo + mmap + function pointer)
-  - Configurable templates: variable names, include length, trailing comma, line wrapping
-
-- Bad-Pattern Detection
-  - Patterns as hex bytes (`00`, `0a`, `ff`), byte sequences (`00 00 00`), or regex over hex text
-  - Matches list with offsets; click to highlight bytes/assembly
-  - Status badge for match count
-
-- Validation Rules
-  - No variables/labels or assembler directives that produce relocations
-  - No absolute addresses (e.g., `mov rax, 0x7fff...`, `[0xADDR]`)
-  - No relocations/unresolved symbols from the assembler
-  - No null bytes by default; user can allow via patterns
-
-- Peephole Optimizations (opt-in)
-  - `push 0` → `xor reg, reg; push reg` (arch-aware)
-  - `mov rax, IMM` → `mov al, IMM` when `IMM` fits and safe
-  - Preview changes; accept/reject per transform
-  - Safety checks ensure no forbidden bytes/semantics changes; warn on uncertainty
-
-- History & Snippets
-  - Save/load named snippets per architecture
-  - Persist settings and patterns per user
-
----
-
-## UI Overview
-
-- Top toolbar: New, Open, Save, Copy, Assemble, Disassemble, Optimize (toggle), Validate
-- Left pane: Input tabs (Hex/Bytes, Assembly)
-- Right pane: Output (Disassembly/Assembly), Formats, Validation, History
-- Bottom status bar: arch/platform, length, nulls, bad-patterns, optimization state
-
----
-
-## Keyboard Shortcuts (default)
-
-- `Ctrl/Cmd + Enter`: Assemble current Assembly tab
-- `Shift + Enter`: Disassemble Hex/Bytes input
-- `Ctrl/Cmd + B`: Toggle Optimize preview
-- `Ctrl/Cmd + E`: Validate
-- `Ctrl/Cmd + C`: Copy current format block
-
-(Shortcuts are subject to change; configurable in a later milestone.)
-
----
-
-## Safety & Ethics
-
-- The plugin never executes shellcode. It assembles/disassembles and analyzes bytes only.
-- Use shellcode exclusively on systems you own or have explicit permission to test.
-
----
-
-## Configuration & Storage
-
-- Bad patterns, export templates, and user snippets are stored in a plugin-specific config under Binary Ninja’s user data directory (platform-specific).
-- A future update will add UI to import/export settings and custom transforms.
-
----
-
-## Development
-
-- Tech stack: Python 3.8+, Binary Ninja Python API, PySide2
-- Recommended workspace layout:
-
-```
-Shellcode-IDE/
-  shellcode_ide/
-    __init__.py              # plugin entrypoint (BN actions, dock widget)
-    ui/                      # Qt .ui files and wrappers
-    backends/
-      bn_adapter.py          # BN assembly/disassembly wrappers
-      optimize.py            # peephole passes
-      validator.py           # validation checks
-    formatters/              # export formatters
-  tests/                     # unit tests and sample shellcodes
-  README.md                  # this file
-  LICENSE                    # MIT recommended
+```bash
+cd "~/Library/Application Support/Binary Ninja/plugins"
+git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
 ```
 
-### Running & Reloading
+**Linux**:
 
-- Start Binary Ninja; the plugin registers automatically.
-- To iterate on UI/logic: edit files, then restart BN or use “Reload Plugins”.
-- Logs and errors: open Binary Ninja’s Log and Python Console to view tracebacks and debug prints.
+```bash
+cd ~/.binaryninja/plugins
+git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
+```
 
-### Testing
+**Windows (PowerShell)**:
 
-- Tests cover assemble/disassemble round-trips, optimization rules, and validators.
-- From the repo root (with BN’s Python available on PATH or `PYTHONPATH`), run:
-  - `python -m pytest -q`
-- Some tests may require the Binary Ninja API; those will be skipped if the API is unavailable in the current interpreter.
+```powershell
+cd "$env:APPDATA\Binary Ninja\plugins"
+git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
+```
 
-### Coding Style
+After installation, restart Binary Ninja or use "Reload Plugins".
 
-- Prefer small, composable modules with clear responsibilities
-- Keep GUI code thin; push logic to backends
-- Add docstrings where behavior isn’t obvious; avoid over-commenting obvious code
+### Quick Start
 
----
+#### To disassemble bytes/hex to assembly
 
-## Roadmap
+1. Open Shellcode IDE from `Tools → Shellcode IDE` or toolbar icon
+2. Select target `Architecture`/`Platform` (defaults to active view when available)
+3. Paste hex/bytes into the "Hex/Bytes" tab (supports whitespace, `0x` prefixes, and `\x..` forms)
+4. Click "Disassemble". View assembly in the output panel and stats in the status bar
+5. Export via the "Formats" tab (copy or save to file)
 
-- M1 — Core assemble/disassemble: basic GUI, assemble/disassemble, formats, length
-- M2 — Validation & bad-patterns: validation pipeline, pattern editor UI
-- M3 — Optimize passes: two sample peepholes, preview+apply UX
-- M4 — Extensibility: snippets, custom transforms, export templates
-- M5 — Polish & tests: full unit tests, docs, sample snippets, CI
+#### To assemble assembly to shellcode
 
----
+1. Switch to the "Assembly" tab and enter one instruction per line
+2. Click "Assemble". Errors (if any) show inline with line/column info
+3. Review live stats, run "Optimize" (optional), "Validate", and export in your preferred format
 
-## Troubleshooting
+### Usage Examples
 
-- “Assemble” fails or produces errors
-  - Confirm the selected Architecture/Platform matches your intent
-  - Check Binary Ninja version and that its Python environment is used
-  - Inspect the Log/Python Console for detailed assembler diagnostics
+**Basic Assembly:**
 
-- Disassembly stops mid-stream
-  - The bytes may not decode fully for the selected architecture; verify input and arch mode (e.g., 32-bit vs 64-bit)
+```
+mov rax, 0x3b
+mov rdi, 0x68732f6e69622f
+push rdi
+mov rsi, rsp
+xor rdx, rdx
+syscall
+```
 
-- UI issues (blank window or missing Qt)
-  - Binary Ninja bundles Qt/PySide2; ensure you’re not shadowing it with another Qt install
-  - Restart Binary Ninja and check the Log for exceptions
+**Hex Input:**
 
-- Validation flags “relocations”
-  - Remove labels/symbols/absolute addresses from assembly; ensure position-independent constructs
+```
+90 90 48 c7 c0 3b 00 00 00 48 c7 c7 2f 62 69 6e 2f 73 68 57 48 89 e6 48 31 d2 0f 05
+```
 
----
+or
 
-## FAQ
+```
+\x90\x90\x48\xc7\xc0\x3b\x00\x00\x00\x48\xc7\xc7\x2f\x62\x69\x6e\x2f\x73\x68\x57\x48\x89\xe6\x48\x31\xd2\x0f\x05
+```
 
-- Does the plugin execute shellcode?
-  - No. It never runs user-provided bytes; it only assembles/disassembles and analyzes.
+## Where users can get help
 
-- Can I add my own optimizations?
-  - Planned: a small JSON/DSL for custom peepholes with safety checks.
+- **Documentation**: Refer to the detailed information in this README
+- **Issues**: Report bugs or request features at [GitHub Issues](https://github.com/CX330Blake/Shellcode-IDE/issues)
+- **Binary Ninja Community**: Join the Binary Ninja community forums for plugin-related questions
+- **Source Code**: Browse the source code in this repository for implementation details
 
-- Which architectures are supported?
-  - Any architecture that Binary Ninja supports and exposes via its Python API on your installation.
+## Who maintains and contributes
 
----
+### Maintainer
 
-## Contributing
+- **CX330Blake** - Original author and current maintainer
+
+### Contributing
 
 Contributions are welcome! Please open issues for bugs/ideas and submit focused PRs.
 
+#### Development Setup
+
+1. Clone the repository into your Binary Ninja plugins directory
+2. Install dependencies: `pip install -r requirements.txt`
+3. Restart Binary Ninja or use "Reload Plugins"
+
+#### For Developers
+
+- **Tech stack**: Python 3.8+, Binary Ninja Python API, PySide2
 - Keep changes minimal and scoped to the task
 - Match the existing code style and structure
 - Include tests for new logic where practical
 
----
+### Dependencies
+
+The plugin requires the following dependencies:
+
+- `pygments>=2.12`
+- `keystone-engine>=0.9.2`
 
 ## License
 
-MIT (recommended). See `LICENSE` once added to the repository.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
----
-
-## Acknowledgments
-
-- Binary Ninja team and community for the APIs and plugin ecosystem
-- Inspiration from common shellcode workflows and CTF tooling
-
-
-
-## Installation Instructions
-
-### Darwin
-
-macOS:
-cd "~/Library/Application Support/Binary Ninja/plugins"
-git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
-Restart Binary Ninja or use "Reload Plugins".
-
-### Linux
-
-Linux:
-cd ~/.binaryninja/plugins
-git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
-Restart Binary Ninja or use "Reload Plugins".
-
-### Windows
-
-Windows (PowerShell or CMD):
-cd "%APPDATA%\Binary Ninja\plugins"
-git clone https://github.com/CX330Blake/Shellcode-IDE Shellcode-IDE
-Restart Binary Ninja or use "Reload Plugins".
-
-## Minimum Version
-
-This plugin requires the following minimum version of Binary Ninja:
-
-* 3164
-
-
-
-## Required Dependencies
-
-The following dependencies are required for this plugin:
-
- * pip - pygments>=2.12, keystone-engine>=0.9.2
- * apt - 
- * installers - 
- * other - Requires Binary Ninja with Python API (licensed)., PySide2 is bundled with Binary Ninja; no extra install typically required.
-
-
-## License
-
-This plugin is released under a MIT license.
-## Metadata Version
-
-2
