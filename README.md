@@ -1,7 +1,11 @@
 # Shellcode-IDE (v0.1.14)
 Author: **CX330Blake**
 
-_## Demo
+_Shellcode IDE makes developing and analyzing shellcode much more convenient._
+
+## Description:
+
+## Demo
 
 https://github.com/user-attachments/assets/8a0cbc62-4f29-417f-a1d1-6d3005a1be41
 
@@ -102,11 +106,7 @@ Contributions are welcome! Please open issues for bugs/ideas and submit focused 
 - Match the existing code style and structure
 - Include tests for new logic where practical
 
-_
 
-## Description:
-
-Shellcode IDE makes developing and analyzing shellcode much more convenient.
 
 
 ## Installation Instructions
