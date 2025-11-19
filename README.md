@@ -1,6 +1,5 @@
 # Shellcode-IDE
 
-[![Version](https://img.shields.io/badge/version-0.1.10-blue)](https://github.com/CX330Blake/Shellcode-IDE)
 [![License](https://img.shields.io/github/license/CX330Blake/Shellcode-IDE)](LICENSE)
 [![Binary Ninja](https://img.shields.io/badge/Binary%20Ninja-v3164+-red)](https://binary.ninja/)
 [![Python](https://img.shields.io/badge/python-3.8+-blue)](https://www.python.org/)
@@ -9,7 +8,7 @@
 
 ## Demo
 
-https://github.com/user-attachments/assets/8a0cbc62-4f29-417f-a1d1-6d3005a1be41
+<https://github.com/user-attachments/assets/8a0cbc62-4f29-417f-a1d1-6d3005a1be41>
 
 ## What the project does
 
@@ -174,4 +173,3 @@ The plugin requires the following dependencies:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
